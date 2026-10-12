@@ -6,13 +6,27 @@
 #include <MarioKartWii/Kart/KartValues.hpp>
 #include <MarioKartWii/RKNet/RKNetController.hpp>
 #include <core/rvl/OS/OS.hpp>
+#include <runtimeWrite.hpp>
+#include <Dolphin/DolphinIOS.hpp>
 
 namespace SillyKartWii {
 bool isPAL = REGION == 'P';
 bool isUSA = REGION == 'E';
 bool isJapan = REGION == 'J';
 bool isKorea = REGION == 'K';
+
+// bye bye channel button (on dolphin LOL)
+kmRuntimeUse(0x80625E1C);
+void HideChannelButton() {
+    kmRuntimeWrite32A(0x80625E1C, 0x38800004);
+    if (Dolphin::IsEmulator()) {
+        kmRuntimeWrite32A(0x80625E1C, 0x38800003);
+    }
 }
+
+}
+
+static SectionLoadHook hideChannelButton(SillyKartWii::HideChannelButton);
 
 u32 FPSPatchHook = 0;
 u32 PredictionHook = 0;
@@ -54,6 +68,7 @@ u8 U8_BRAKEDRIFTING = 0;
 u16 U16_GAMEPLAY2 = 0;
 u32 TTS_CHECK = 0;
 u16 U16_MISSION_MODE_FIX = 0;
+u8 U8_MISSION_ID = 0;
 u8 U8_WWS_CHECK = 0;
 float F32_MENUSPEED = 0.0f;
 
@@ -62,6 +77,17 @@ u16 GCInput = 0;
 u16 ClassicInput = 0;
 u16 U16_FREE_ROAM = 0;
 u8 U8_BATTLE_CHECK = 0;
+
+// Countdown Mode variables (defined in Countdown.cpp as extern "C")
+// u16 U16_GAMEPLAYG = 0;
+// u16 EndRaceCountdown = 0;
+// u8 LAPNUMBER = 0;
+// float U32_MUSIC_SPEED = 1.0f;
+
+// ItemRain Mode variables
+u16 U16_ITEMRAIN = 0;
+
+// Character Layer variables are defined in symbols.txt as memory addresses - DO NOT define them here!
 
 namespace SillyKartWii {
 
@@ -94,6 +120,9 @@ static void InitializeSillyKartWii() {
     U16_SILLY_EFFECTS = 0;
     U16_SILLY_SOUNDS = 0;
 }
-BootHook initSillyKart(InitializeSillyKartWii, 0);
+BootHook initSillyKart(InitializeSillyKartWii, 1);
 
 }
+
+// Crown minimap setting variable
+u16 U16_CROWN = 0;
