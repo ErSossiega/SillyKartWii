@@ -289,7 +289,7 @@ void removeESRB() {
         *(u32 *)0x80604094 = 0x4800001c;
 }
 
-BootHook RemoveESRBHook(removeESRB, 0);
+BootHook RemoveESRBHook(removeESRB, 1);
 
 //NTSC-K Files
 kmRegionWrite32(0x8087E1F9, 0x2E737A73, 'K');
