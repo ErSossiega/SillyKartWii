@@ -1,3 +1,4 @@
+#include <Race/Players24/Online24.hpp>
 #include <core/nw4r/ut/Misc.hpp>
 #include <MarioKartWii/GlobalFunctions.hpp>
 #include <MarioKartWii/UI/Page/Other/SELECTStageMgr.hpp>
@@ -20,20 +21,26 @@ ExpVR::ExpVR() : comboButtonState(0) {
 kmWrite32(0x8064a61c, 0x60000000); //nop initControlGroup
 
 kmWrite24(0x808998b3, 'PUL'); //WifiMemberConfirmButton -> PULiMemberConfirmButton
+/*
+    VR::OnInit fills 0 to 0xE with the page title, the bottom text, the OK button and the twelve vrControls. In a room
+    past 12 consoles the page has 24 vrControls (Race/Players24/Online24Pages.cpp): 0 to 0x1A, so the two buttons
+    added here go right after the rows.
+*/
 void ExpVR::OnInit() {
-    this->InitControlGroup(0x11);
+    const u32 firstButton = 3 + Players24::DecideVRRows(); //title, bottom text, OK button, then the rows
+    this->InitControlGroup(firstButton + 2);
     VR::OnInit();
 
     const System* system = System::sInstance;
     bool isKOd = false;
     if(system->IsContext(PULSAR_MODE_KO) && system->koMgr->isSpectating) isKOd = true;
 
-    this->AddControl(0xF, this->randomComboButton, 0);
+    this->AddControl(firstButton, this->randomComboButton, 0);
     this->randomComboButton.isHidden = isKOd;
     this->randomComboButton.Load(UI::buttonFolder, "PULiMemberConfirmButton", "Random", 1, 0, isKOd);
     this->randomComboButton.SetOnClickHandler(this->onRandomComboClick, 0);
 
-    this->AddControl(0x10, this->changeComboButton, 0);
+    this->AddControl(firstButton + 1, this->changeComboButton, 0);
     this->changeComboButton.isHidden = isKOd;
     this->changeComboButton.Load(UI::buttonFolder, "PULiMemberConfirmButton", "Change", 1, 0, isKOd);
     this->changeComboButton.SetOnClickHandler(this->onChangeComboClick, 0);
@@ -276,8 +283,11 @@ void ExpMultiKartSelect::BeforeControlUpdate() {
 }
 
 void DriftSelectBeforeControlUpdate(Pages::DriftSelect* driftSelect) {
-    ExpCharacterSelect* charSelect = SectionMgr::sInstance->curSection->Get<ExpCharacterSelect>();
-    if(charSelect->rouletteCounter != -1 && driftSelect->currentState == 0x4) {
+    SectionMgr* sectionMgr = SectionMgr::sInstance;
+    if(sectionMgr == nullptr || sectionMgr->curSection == nullptr) return;
+    
+    ExpCharacterSelect* charSelect = sectionMgr->curSection->Get<ExpCharacterSelect>();
+    if(charSelect != nullptr && charSelect->rouletteCounter != -1 && driftSelect->currentState == 0x4) {
         driftSelect->controlsManipulatorManager.inaccessible = true;
         PushButton* autoButton = driftSelect->controlGroup.GetControl<PushButton>(1);
         PushButton* manualButton = driftSelect->controlGroup.GetControl<PushButton>(0);
@@ -291,10 +301,11 @@ void DriftSelectBeforeControlUpdate(Pages::DriftSelect* driftSelect) {
 kmWritePointer(0x808D9DF8, DriftSelectBeforeControlUpdate);
 
 void MultiDriftSelectBeforeControlUpdate(Pages::MultiDriftSelect* multiDriftSelect) {
-
     SectionMgr* sectionMgr = SectionMgr::sInstance;
+    if(sectionMgr == nullptr || sectionMgr->curSection == nullptr || sectionMgr->sectionParams == nullptr) return;
+    
     ExpCharacterSelect* charSelect = sectionMgr->curSection->Get<ExpCharacterSelect>();
-    if(charSelect->rouletteCounter != -1 && multiDriftSelect->currentState == 0x4) {
+    if(charSelect != nullptr && charSelect->rouletteCounter != -1 && multiDriftSelect->currentState == 0x4) {
         multiDriftSelect->controlsManipulatorManager.inaccessible = true;
         for(int i = 0; i < sectionMgr->sectionParams->localPlayerCount; ++i) {
             PushButton* autoButton = multiDriftSelect->externControls[0 + 2 * i];
@@ -310,14 +321,19 @@ void MultiDriftSelectBeforeControlUpdate(Pages::MultiDriftSelect* multiDriftSele
 kmWritePointer(0x808D9C10, MultiDriftSelectBeforeControlUpdate);
 
 void AddCharSelectLayer(Pages::SELECTStageMgr& page, PageId id, u32 animDirection) {
-
     const System* system = System::sInstance;
-    const ExpVR* votingPage = SectionMgr::sInstance->curSection->Get<ExpVR>(); //always present when 0x90 is present
-    if(system->IsContext(PULSAR_MODE_KO) && system->koMgr->isSpectating) {
-        id = PAGE_VOTE;
-        page.status = Pages::SELECTStageMgr::STATUS_VOTES_PAGE;
+    const SectionMgr* sectionMgr = SectionMgr::sInstance;
+    
+    if(sectionMgr != nullptr && sectionMgr->curSection != nullptr) {
+        const ExpVR* votingPage = sectionMgr->curSection->Get<ExpVR>(); //always present when 0x90 is present
+        if(system->IsContext(PULSAR_MODE_KO) && system->koMgr->isSpectating) {
+            id = PAGE_VOTE;
+            page.status = Pages::SELECTStageMgr::STATUS_VOTES_PAGE;
+        }
+        else if(votingPage != nullptr && votingPage->comboButtonState != 0) {
+            id = PAGE_CHARACTER_SELECT;
+        }
     }
-    else if(votingPage->comboButtonState != 0) id = PAGE_CHARACTER_SELECT;
     page.AddPageLayer(id, animDirection);
 }
 kmCall(0x806509d0, AddCharSelectLayer);

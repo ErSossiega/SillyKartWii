@@ -52,7 +52,7 @@ DWC::MatchCommand Process(DWC::MatchCommand type, const void* data, u32 dataSize
                 type = DWC::MATCH_COMMAND_RESV_DENY;
             }
         }
-
+    }
         if (SectionMgr::sInstance && SectionMgr::sInstance->curSection) {
             UI::ExpSection* expSection = reinterpret_cast<UI::ExpSection*>(SectionMgr::sInstance->curSection);
             UI::RoomKickPage* roomKick = expSection->GetPulPage<UI::RoomKickPage>();
@@ -68,7 +68,7 @@ DWC::MatchCommand Process(DWC::MatchCommand type, const void* data, u32 dataSize
                 }
             }
         }
-    }
+
     mgr.denyType = denyType;
     return type;
 }

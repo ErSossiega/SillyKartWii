@@ -45,8 +45,17 @@ enum Context {
     PULSAR_MODE_REALMARIOKART,
     PULSAR_POINT_DISTRO,
     PULSAR_MODE_IKW,
+    PULSAR_PLAYERS24, //24-player friend room VS mode, see Race/Players24/
     PULSAR_CONTEXT_COUNT,
     PULSAR_CHARGEJUMP,
+};
+
+enum Context2 {
+    PULSAR_MODE_COUNTDOWN = 0,
+    PULSAR_ITEMMODERAIN,
+    PULSAR_ITEMMODESTORM,
+    PULSAR_ALLITEMSCANLAND,
+    PULSAR_CONTEXT2_COUNT
 };
 
 enum Transmission{
@@ -88,6 +97,7 @@ public:
     const Info& GetInfo() const { return this->info; }
 
     bool IsContext(Context context) const { return (this->context & (1 << context)) != 0; }
+    bool IsContext(Context2 context2) const { return (this->context2 & (1 << context2)) != 0; }
     static s32 OnSceneEnter(Random& random);
 
     const char* GetModFolder() const { return modFolderName; }
@@ -123,6 +133,8 @@ private:
     u32 context;
 
 public:
+    u32 context2;
+
     //Network variables only set when reading a ROOM packet that starts the GP; they are only ever used in UpdateState; no need to clear them as ROOM will reupdat ethem
     Network::Mgr netMgr;
 
@@ -130,7 +142,7 @@ public:
 
     //Transmission system
     u8 GetTransmission;
-    u8 transmissions[12];
+    u8 transmissions[24]; //by player id past the local ones: 24 racers with Race/Players24
     u8 lastSelectedTransmission;
     u32 lastSelectedTransmissionId;
 
