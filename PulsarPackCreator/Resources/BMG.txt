@@ -114,6 +114,9 @@
   286c  = Tied!
   2900	= Settings
   2901	= Modify your settings.
+  2920	= Display Location
+  2921	= Use Wii Console Location
+  2922	= Default Location for Region
   2902	= \z{800,46}Randomize\n\z{800,46}Combo
   2903	= \z{800,46}Change\n\z{800,46}Combo\040
   2910	= Change Teams
@@ -207,6 +210,7 @@
   4002	= Battle Glitch
   4003	= Draggable Blues
   4004	= Speedometer Location
+  4005  = Display FPS
   4010	= Disabled
   4011	= Enabled
   4020	= Disabled
@@ -218,6 +222,8 @@
   4050  = Left
   4051  = Right
   4052  = Disabled
+  4060  = Disabled
+  4061  = Enabled
   4100	= Character icons will show on the minimap.
   4101	= Mii Heads will show on the minimap.
   4200	= Track music will normally transition to the fast lap file.
@@ -229,6 +235,8 @@
   4500	= The speedometer will be on the left.
   4501	= The speedometer will be on the right.
   4502	= The speedometer will be disabled.
+  4600  = FPS counter is disabled.
+  4601  = FPS counter is shown on screen.
   4700  = Speedometer Fractional
   4710  = None
   4711  = 1 digit
@@ -340,6 +348,7 @@
   8003  = Brake Drifting
   8004  = Crown
   8005  = FOV
+  8006  = Display FPS
   8010  = Trail
   8011  = Rotate
   8020  = Disabled
@@ -354,6 +363,8 @@
   8061  = 4:3
   8062  = 16:9
   8063  = GH0STP4WZ Moment
+  8070  = Disabled
+  8071  = Enabled
   8100  = Triple bananas will trail behind you.
   8101  = Triple bananas will rotate around you.
   8200  = You cannot turn in the air.
@@ -368,11 +379,23 @@
   8601  = Field of view adjusted for 4:3 aspect ratio.
   8602  = Field of view adjusted for 16:9 aspect ratio.
   8603  = holy aurora moment XDDDD
+  8700  = FPS counter is disabled.
+  8701  = FPS counter is shown on screen.
+  8710  = Gamemodes
+  8711  = Disabled
+  8712  = Countdown
+  8713  = ItemRain
+  8714  = Random Events
+  8800  = No special gamemode is active.
+  8802  = Countdown mode - reach the finish before time runs out!
+  8804  = ItemRain mode - items rain from the sky!
+  8806  = Random Events are enabled - crazy events happen every 15-45 seconds!
   9000  = No Lightning Flash
   9001  = Mii Nametag Color
   9002  = Items on Minimap
   9003  = Charge Jump
   9004  = Rainbow HUD
+  9005  = Display FPS
   9010  = Disabled
   9011  = Enabled
   9020  = Regular
@@ -383,6 +406,10 @@
   9041  = Enabled
   9050  = Disabled
   9051  = Enabled
+  9060  = Disabled
+  9061  = Enabled
+  9070  = Disabled
+  9071  = Enabled
   9100  = Lightning will flash the screen normally.
   9101  = Lightning will not flash the screen.
   9200  = Nametags will use the regular color.
@@ -393,6 +420,8 @@
   9401  = Charge Jump is enabled.
   9500  = Rainbow HUD is disabled.
   9501  = Rainbow HUD is enabled.
+  9600  = FPS counter is disabled.
+  9601  = FPS counter is shown on screen.
   9700  = HUD Color
   9710  = White
   9711  = Black
@@ -490,13 +519,7 @@
  d000 = FRENZY!
 
 # Race Settings 2 - Gamemodes Scroller
- 8700  = Gamemodes
- 8710  = Disabled
- 8711  = Countdown
- 8712  = ItemRain
- 8800  = No special gamemode is active.
- 8801  = Countdown mode - reach the finish before time runs out!
- 8802  = ItemRain mode - items rain from the sky!
+# Removed - now integrated above in proper positions
 
 # Custom character names/authors under character select.
 # Name:   (characterId << 16) | 0x6a00 | table
@@ -561,12 +584,12 @@
  176a04  = WeebOwO (Overalls)
  176a05  = Brazilian WeebOwO
  176a06  = Rapper WeebOwO
- 177a01  = Weebo64, Fco64
- 177a02  = Weebo64, Fco64, Kytronix
- 177a03  = Weebo64, Fco64
- 177a04  = Weebo64, Fco64
- 177a05  = Weebo64, Fco64, Kytronix
- 177a06  = Weebo64, Fco64, Kytronix
+ 177a01  = Weebo64
+ 177a02  = Weebo64, Kytronix
+ 177a03  = Weebo64
+ 177a04  = Weebo64
+ 177a05  = Weebo64, Kytronix
+ 177a06  = Weebo64, Kytronix
 
 
 
@@ -591,7 +614,7 @@
  117a00  = Nintendo
  117a01  = Fco64, Nolynn
 
-# RACE Page Scroller 1: Player Count (0x4701 = 18177, options at 0x4720-0x4721 = 18208-18209)
+# RACE Page Scroller 1: Player Count (0x4701 = 18177, options at 0x4710-0x4711 = 18192-18193)
 18177 = Player Count
-18208 = 12 Players
-18209 = 24 Players
+18192 = 12 Players
+18193 = 24 Players
