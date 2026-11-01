@@ -69,3 +69,7 @@ GameSource/anticheat.txt
 kamek_whitelist.inc
 build_output.txt
 rr-pulsar-main/
+Loader/Makefile
+BuildPulsar.py
+BuildPulsar.bat
+BuildPulsar.bat

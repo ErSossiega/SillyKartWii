@@ -31,6 +31,7 @@
 		<folder external="/{$pack}/Tracks" disc="/Race/Course" create="true"/>
 		<folder external="/{$pack}/Assets" disc="/" create="true"/>
 		<folder external="/{$pack}/CustomCharacter" disc="/" create="true"/>
+		<folder external="/{$pack}/CharacterLayers" disc="/CharacterLayers" create="true"/>
 		<folder external="/{$pack}/CTBRSTM" disc="/Sound/strm" create="true"/>
 		<folder external="/{$pack}/Ghosts/Experts" disc="/Experts" create="true" />
 	</patch>	
